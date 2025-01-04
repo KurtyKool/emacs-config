@@ -62,12 +62,14 @@
 ;;Stupid Major Modes keep over-riding my keybinds, so let's make a minor mode that can't be overwritten
 
 (setq exwm-input-prefix-keys
-      `(?\C-x
+      `(?\C-z
 	?\C-c
 	?\M-x
 	?\M-&
 	?\M-:
-	?\s-n))
+	?\C-x
+	?\s-n
+	\C-z))
 
 (setq exwm-input-global-keys
       `(
@@ -75,7 +77,11 @@
 	(,(kbd "\C-c <right>") . windmove-right)	
 	(,(kbd "\C-c <up>") . windmove-up)
 	(,(kbd "\C-c <down>") . windmove-down)
-	(,(kbd "\C-z") . winner-undo)
+	;(,(kbd "\C-z <left>") . windmove-left)
+	;(,(kbd "\C-z <right>") . windmove-right)	
+	;(,(kbd "\C-z <up>") . windmove-up)
+	;(,(kbd "\C-z <down>") . windmove-down)
+	;(,(kbd "\C-z") . winner-undo)
 	(, (kbd "\C-x \C-b") . buffer-menu)
  	([s-left] . shrink-window-horizontally)
 	([s-right] . enlarge-window-horizontally)
@@ -88,38 +94,55 @@
 	(,(kbd "s-3") . (lambda () (interactive) (tab-bar-select-tab 3)))
 	(,(kbd "s-4") . (lambda () (interactive) (tab-bar-select-tab 4)))
 	(,(kbd "s-5") . (lambda () (interactive) (tab-bar-select-tab 5)))
+	(,(kbd "\C-c <S-left>") . windmove-swap-states-left)
+	(,(kbd "\C-c <S-right>") . windmove-swap-states-right)
+	(,(kbd "\C-c <S-up>") . windmove-swap-states-up)
+	(,(kbd "\C-c <S-down>") . windmove-swap-states-down)
+	;(,(kbd "\C-z <S-left>") . windmove-swap-states-left)
+	;(,(kbd "\C-z <S-right>") . windmove-swap-states-right)
+	;(,(kbd "\C-z <S-up>") . windmove-swap-states-up)
+	;(,(kbd "\C-z <S-down>") . windmove-swap-states-down)
 	))
 	
 
-;(defvar my/keys-keymap (make-keymap)
-;  "Keymap for my/keys-mode")
-;(define-minor-mode my/keys-mode
-;  "Minor mode for my personal keybindings so major modes can't keep fucking my shit up."
-;  :init-value t
-;  :global t
-;  :keymap my/keys-keymap)
-;(add-to-list `emulation-mode-map-alists
-;	     `((my/keys-mode . ,my/keys-keymap)))
-;(define-key my/keys-keymap (kbd "\C-c <left>") 'windmove-left)
-;(define-key my/keys-keymap (kbd "\C-c <right>") 'windmove-right)
-;(define-key my/keys-keymap (kbd "\C-c <up>") 'windmove-up)
-;(define-key my/keys-keymap (kbd "\C-c <down>") 'windmove-down)
+(defvar my/keys-keymap (make-keymap)
+ "Keymap for my/keys-mode")
+(define-minor-mode my/keys-mode
+ "Minor mode for my personal keybindings so major modes can't keep fucking my shit up."
+ :init-value t
+ :global t
+ :keymap my/keys-keymap)
+(add-to-list `emulation-mode-map-alists
+	     `((my/keys-mode . ,my/keys-keymap)))
+(define-key my/keys-keymap (kbd "\C-c <left>") 'windmove-left)
+(define-key my/keys-keymap (kbd "\C-c <right>") 'windmove-right)
+(define-key my/keys-keymap (kbd "\C-c <up>") 'windmove-up)
+(define-key my/keys-keymap (kbd "\C-c <down>") 'windmove-down)
+;(define-key my/keys-keymap (kbd "\C-z <left>") 'windmove-left)
+;(define-key my/keys-keymap (kbd "\C-z <right>") 'windmove-right)
+;(define-key my/keys-keymap (kbd "\C-z <up>") 'windmove-up)
+;(define-key my/keys-keymap (kbd "\C-z <down>") 'windmove-down)
 ;(define-key my/keys-keymap (kbd "\C-z") `winner-undo) ;Stop ctrl-z from fucking up emacs
-;(define-key my/keys-keymap (kbd "\C-x \C-b") `buffer-menu)
-;(define-key my/keys-keymap (kbd "<s-left>") `shrink-window-horizontally)
-;(define-key my/keys-keymap (kbd "<s-right>") `enlarge-window-horizontally)
-;(define-key my/keys-keymap (kbd "<s-down>") `shrink-window)
-;(define-key my/keys-keymap (kbd "<s-up>") `enlarge-window)
-;(define-key my/keys-keymap (kbd "<s-tab>") `tab-next)
-;(define-key my/keys-keymap (kbd "s-n") `tab-new)
-;(define-key my/keys-keymap (kbd "s-1") (lambda () (interactive) (tab-bar-select-tab 1)))
-;(define-key my/keys-keymap (kbd "s-2") (lambda () (interactive) (tab-bar-select-tab 2)))
-;(define-key my/keys-keymap (kbd "s-3") (lambda () (interactive) (tab-bar-select-tab 3)))
-;(define-key my/keys-keymap (kbd "s-4") (lambda () (interactive) (tab-bar-select-tab 4)))
-;(define-key my/keys-keymap (kbd "s-5") (lambda () (interactive) (tab-bar-select-tab 5)))
-
-
-
+(define-key my/keys-keymap (kbd "\C-x \C-b") `buffer-menu)
+(define-key my/keys-keymap (kbd "<s-left>") `shrink-window-horizontally)
+(define-key my/keys-keymap (kbd "<s-right>") `enlarge-window-horizontally)
+(define-key my/keys-keymap (kbd "<s-down>") `shrink-window)
+(define-key my/keys-keymap (kbd "<s-up>") `enlarge-window)
+(define-key my/keys-keymap (kbd "<s-tab>") `tab-next)
+(define-key my/keys-keymap (kbd "s-n") `tab-new)
+(define-key my/keys-keymap (kbd "s-1") (lambda () (interactive) (tab-bar-select-tab 1)))
+(define-key my/keys-keymap (kbd "s-2") (lambda () (interactive) (tab-bar-select-tab 2)))
+(define-key my/keys-keymap (kbd "s-3") (lambda () (interactive) (tab-bar-select-tab 3)))
+(define-key my/keys-keymap (kbd "s-4") (lambda () (interactive) (tab-bar-select-tab 4)))
+(define-key my/keys-keymap (kbd "s-5") (lambda () (interactive) (tab-bar-select-tab 5)))
+(define-key my/keys-keymap (kbd "\C-c <S-left>") `windmove-swap-states-left)
+(define-key my/keys-keymap (kbd "\C-c <S-right>") `windmove-swap-states-right)
+(define-key my/keys-keymap (kbd "\C-c <S-up>") `windmove-swap-states-up)
+(define-key my/keys-keymap (kbd "\C-c <S-down>") `windmove-swap-states-down)
+;(define-key my/keys-keymap (kbd "\C-z <S-left>") `windmove-swap-states-left)
+;(define-key my/keys-keymap (kbd "\C-z <S-right>") `windmove-swap-states-right)
+;(define-key my/keys-keymap (kbd "\C-z <S-up>") `windmove-swap-states-up)
+;(define-key my/keys-keymap (kbd "\C-z <S-down>") `windmove-swap-states-down)
 
 ;;;; CUSTOM PROGRAMS
 
@@ -155,6 +178,8 @@
 	  (lambda ()
 	    (exwm-workspace-rename-buffer exwm-class-name)))
 
+(add-hook `csv-mode-hook `csv-align-mode)
+
 ;(add-hook `exwm-update-class-hook
 ;	  (mode- my/keys-mode))
 
@@ -162,23 +187,27 @@
   (interactive)
   (setq left-margin-width 0)
   (setq right-margin-width 0)
+  (set-window-buffer (selected-window) (current-buffer))
   )
 
 (defun bigmargins ()
   (interactive)
   (setq left-margin-width 12)
   (setq right-margin-width 9)
+  (set-window-buffer (selected-window) (current-buffer))
   ) 
 
 (defun smallmargins ()
   (interactive)
   (setq left-margin-width 5)
   (setq right-margin-width 4)
+  (set-window-buffer (selected-window) (current-buffer))
   )
 
 (defun setmargins (lw rw)
   (setq left-margin-width lw)
   (setq right-margin-width rw)
+  (set-window-buffer (selected-window) (current-buffer))
   )
 
 (defun opensudo ()
@@ -218,8 +247,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(s)))
+ '(package-selected-packages '(guix csv-mode s)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
